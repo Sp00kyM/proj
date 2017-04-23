@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <cstdlib>
 #include <string.h>
@@ -11,13 +10,14 @@ using namespace std;
 string pwd = get_current_dir_name();
 int pipecount = 0;
 void prompt(){
-  cout<<"1730sh:"<<pwd<<"$/"<<endl;
+  cout<<"1730sh:"<<pwd<<"/$";
 }
 void fillargs(string commandline, vector<string> &args){
   string give="";
   for(uint i =0 ;i<commandline.length();i++){
+    if(commandline[i]==' '){continue;}
     give+=commandline[i];
-    if(commandline[i]==' ' && commandline[i+1]!= ' '){
+    if(commandline[i+1]==' ' && commandline[i+2]!= ' '){
       args.push_back(give);
       give = "";
     }
@@ -72,15 +72,18 @@ int main(){
     if(pipecount == 0 && strcmp(args[0].c_str(),"cd")==0){
       chdir(args[1].c_str());
       pwd =  get_current_dir_name();
+      cout<<"1730sh: cd:"<<args[1]<<": No such file or directory"<<endl;
     }
     else if(pipecount == 0 && (strcmp(args[0].c_str(),"help")==0)|(strcmp(args[0].c_str(),"h")==0))
-      {
-
+      {cout<<"MAXIMUM LUVV SHELL v1.0"<<endl
+           <<"AUTHORS: ANDREW STOUT, CALEB GERBER."<<endl
+           <<"Built in functions: cd, exit, help."<<endl
+           <<"Other commands the same as UNIX"<<endl;
       }
     else if(pipecount == 0 && (strcmp(args[0].c_str(),"exit")==0)){
       return(EXIT_SUCCESS);
     }
-    else{cout<<"something else";}
+    else{cout<<"1730sh:"<<args[0]<<": command not found"<<endl;}
   }
 }
 
